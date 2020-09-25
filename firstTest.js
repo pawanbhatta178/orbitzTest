@@ -1,6 +1,4 @@
 const { Builder, By, Key, until } = require("selenium-webdriver");
-const test = require("selenium-webdriver/testing");
-const assert = require("assert");
 
 (async function example() {
   let driver = await new Builder().forBrowser("firefox").build();
@@ -13,20 +11,18 @@ const assert = require("assert");
       until.titleIs(
         "4 Cortlandt Alley, New York, NY 10013, USA Hotel Search Results"
       ),
-      1000
+      10000
     );
   } finally {
-    test.describe("TestSearchPage", function () {
-      test.it("SearchPageTitle", async function () {
-        const pageTitle = await driver.getTitle();
-        await assert.equal(
-          pageTitle,
-          "4 Cortlandt Alley, New York, NY 10013, USA Hotel Search Results"
-        );
-      });
-      test.after(async function () {
-        await driver.quit();
-      });
-    });
+    const pageTitle = await driver.getTitle();
+    if (
+      pageTitle ===
+      "4 Cortlandt Alley, New York, NY 10013, USA Hotel Search Results"
+    ) {
+      console.log("\u2705 Test Passed! Page Title as expected.");
+    } else {
+      console.log("\u274C Test Failed! Unexpected Page Title! ");
+    }
+    await driver.quit();
   }
 })();
